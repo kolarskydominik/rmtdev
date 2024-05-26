@@ -7,9 +7,6 @@ export function useJobItems(searchText: string) {
   const [jobItems, setJobItems] = useState<JobItemType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const totalNumberOfResults = jobItems.length;
-  const jobItemsSliced = jobItems.slice(0, 7);
-
   useEffect(() => {
     if (!searchText) return;
     const fetchData = async () => {
@@ -24,12 +21,14 @@ export function useJobItems(searchText: string) {
     fetchData();
   }, [searchText]);
 
-  return {jobItemsSliced, isLoading, totalNumberOfResults};
+  return {jobItems, isLoading};
 }
+
 type JobItemApiResponse = {
   public: boolean;
   jobItem: JobItemTypeExpanded;
 };
+
 const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
   const response = await fetch(`${BASE_API_URL}/${id}`);
 
